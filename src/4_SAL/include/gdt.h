@@ -1,5 +1,5 @@
 
-#include <stdint.h>
+#include <libc/stdint.h>
 
 
 // This structure contains the value of one GDT entry.
@@ -25,5 +25,6 @@ struct gdt_ptr_struct
 typedef struct gdt_ptr_struct gdt_ptr_t;
 
 void init_descriptor_tables();
+void init_gdt();
 
 

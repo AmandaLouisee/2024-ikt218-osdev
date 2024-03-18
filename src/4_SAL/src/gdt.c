@@ -2,6 +2,7 @@
 // initialises the GDT and IDT.
 
 #include <libc/stdint.h>
+#include <gdt.h>
 
 
 //
@@ -11,30 +12,26 @@
 // Rewritten for JamesM's kernel development tutorials.
 //
 
-#include "common.h"
-#include "descriptor_tables.h"
+ //#include <common.h>
+// #include <descriptor_tables.h>
 
 // Lets us access our ASM functions from our C code.
-extern void gdt_flush(u32int);
+extern void gdt_flush(uint32_t);
 
 // Internal function prototypes.
-static void init_gdt();
-static void gdt_set_gate(s32int,u32int,u32int,u8int,u8int);
+void init_gdt();
+void gdt_set_gate(uint32_t,uint32_t,uint32_t,uint8_t,uint8_t);
 
 gdt_entry_t gdt_entries[5];
 gdt_ptr_t   gdt_ptr;
-idt_entry_t idt_entries[256];
-idt_ptr_t   idt_ptr;
+//idt_entry_t idt_entries[256];
+//idt_ptr_t   idt_ptr;
 
 
 
 
 
-
-
-
-
-static void init_gdt()
+void init_gdt()
 {
    gdt_ptr.limit = (sizeof(gdt_entry_t) * 5) - 1;
    gdt_ptr.base  = (uint32_t)&gdt_entries;
@@ -49,7 +46,7 @@ static void init_gdt()
 }
 
 // Set the value of one GDT entry.
-static void gdt_set_gate(sint32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)
+void gdt_set_gate(uint32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)
 {
    gdt_entries[num].base_low    = (base & 0xFFFF);
    gdt_entries[num].base_middle = (base >> 16) & 0xFF;
